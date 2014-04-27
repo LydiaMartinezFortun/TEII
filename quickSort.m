@@ -2,8 +2,8 @@
 disp('Este programa ordena un vector de tamaño n, con numeros aleatorios.');
 global n = input('Introduce el valor de n: ');
 global vector=(rand(n,1)*500);			%rellena el vector de tamaño n con numeros aleatorios entre cero y uno y los multiplica por 500
-%disp('El vector es el siguiente: ');
-%printf(' %d ',vector);
+disp('El vector es el siguiente: ');
+printf(' %f ',vector);
 
 function vectorOrdenado=quickSort(v)     
   vectorOrdenado = v;               
@@ -17,6 +17,8 @@ function vectorOrdenado=quickSort(v)
   end
 endfunction
  
-tic,u=quickSort(vector); toc
-u
+tic,u=quickSort(vector); t=toc
+disp('El vector ordenado es el siguiente: ');
 
+printf(' %f ',u)
+t
