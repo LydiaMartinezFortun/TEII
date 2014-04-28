@@ -30,16 +30,16 @@
 
 
 \begin{abstract}
-En este documento en \LaTeX{} se explica el calculo del algoritmo de ordenación QuickSort hecho en Octave y los tiempos de ejecución para diferentes tamaños de problemas.
+En este documento en \LaTeX{} se explica el cálculo del algoritmo de ordenación QuickSort hecho en Octave y los tiempos de ejecución para diferentes tamaños de problemas.
 \end{abstract}
-
+\newpage
 \tableofcontents
 
 \newpage
 
 \section{Introducción al algoritmo}
 
-En este documento se muestra como hacer un algoritmo de ordenación en Octave. En este caso he implementado el algoritmo QuickSort, que lo que hace es elegir un pivote y dividiendo el vector en los mayores, menores o iguales a él.
+En este documento se muestra cómo hacer un algoritmo de ordenación en Octave. En este caso he implementado el algoritmo QuickSort, que lo que hace es elegir un pivote y dividir el vector en los mayores, menores o iguales a él para aplicar sucesivas llamadas recursivas.
 
 
 
@@ -78,7 +78,7 @@ FINFUNCION
 
 \subsection{Código en Octave}
 \subsubsection{Funcion QuickSort en Octave}
-Para la implementacion de la función QuickSort he hecho de funciones de octave. Una de ellas es la funcion \emph{round} que redondea el valor obtenido de la division. Otra función que he usado es \emph{find}, dada una condición crea un vector con los valores que la cumplan, en el primer caso crea un vector con los valores menores que el pivote.
+Para la implementación de la función QuickSort he hecho uso de algunas funciones de octave. Una de ellas es la funcion \emph{round} que redondea el valor obtenido de la división. Otra función que he usado es \emph{find}, que dada una condición crea un vector con los elementos de otro vector que la cumplan. En el primer caso crea un vector con los valores menores que el pivote, luego otro vector con los elementos iguales al pivote (ya que en el vector original puede haber elementos repetidos) y un tercer vector con los elementos mayores. Finalmente se concatenan: el resultado de aplicar quicksort al vector de menores, el vector de pivotes, y el resultado de aplicar quicksort al vector de mayores. La idea es que siempre quedan a un lado los elementos menores que el pivote, al otro lado los elementos mayores, y dichos subconjuntos se van ordenando del mismo modo hasta terminar.
 \bigskip %para separa el texto del codigo
 \lstset{language=Octave}
 \begin{lstlisting}[frame=single][language=Octave]
@@ -96,16 +96,18 @@ function vectorOrdenado=quickSort(v)
   end
 endfunction
 \end{lstlisting}
-\subsubsection{Funcion para calcular los tiempos de ejecucion de Quick Sort}
-Este algoritmo calcula el tiempo de ejecución de la función Quick Sort desde tamaño 1 hasta el tamaño máximo pasado por parametro \emph {tamMax}. Para calcular el tiempo de ejecución he usado las funciones tic y toc de Octave. En toc se guarda el tiempo, y este lo almaceno en un vector \emph{tiemposTam}, el cual cada indice corresponde al tamaño del vector ejecutado.
+\subsubsection{Función para calcular los tiempos de ejecución de Quick Sort}
+Este algoritmo calcula el tiempo de ejecución de la función Quick Sort desde tamaño 1 hasta el tamaño máximo pasado por parametro \emph {tamMax}. Para calcular el tiempo de ejecución he usado las funciones tic y toc de Octave. En toc se guarda el tiempo, y éste lo almaceno en un vector \emph{tiemposTam}, en el cuál cada índice corresponde al tamaño del vector ejecutado.
 La función \emph{zeros(1,0)} crea un vector de una fila y lo rellena con ceros.
-Para que los casos a probar sean los mas dispares posibles he usado la funcion \emph{rand(tam,1)} para que los valores de los vectores sean aleatorios. La función \emph{rand} devuelve numeros aleatorios entre cero y uno. Debido a esto la multiplico por 2000, para que el rango de valores sea aun mas amplio.
+Para que los casos a probar sean lo más dispares posibles he usado la funcion \emph{rand(tam,1)} para que los valores de los vectores sean aleatorios. La función \emph{rand} devuelve números aleatorios entre cero y uno. Debido a esto la multiplico por 2000, para que el rango de valores sea aún más amplio y los resultados más legibles.
 \bigskip %para separa el texto del codigo
 \lstset{language=Octave}
 \begin{lstlisting}[frame=single][language=Octave]
 function tiemposTam=tiempoQuickSort(maxTam)
 	tiemposTam=zeros(1,0);
 	tam=1;
+	\end{lstlisting}
+	\begin{lstlisting}[frame=single][language=Octave]
 	while(tam<=maxTam)
 		vector=(rand(tam,1)*500);	
 		tic,u=quickSort(vector); 
@@ -114,9 +116,6 @@ function tiemposTam=tiempoQuickSort(maxTam)
 			disp(El vector inicial es el siguiente: );
 			printf( %f ,vector);
 			printf("\n");
-			
-			\end{lstlisting}
-			\begin{lstlisting}[frame=single][language=Octave]
 			
 			disp(El vector ordenado es el siguiente: );
 			printf( %f ,u);
@@ -127,9 +126,9 @@ function tiemposTam=tiempoQuickSort(maxTam)
 
 endfunction
 \end{lstlisting}
-\subsubsection{Codigo para usar de las funciones}
-Con este codigo se obtienen las graficas. El el primer caso se obtiene una grafica de los tiempos de ejecucion de vectores de tamaño 1 hasta 20. En el segundo caso se ejecuta tres veces con tamaño del vector igual a 500 el algoritmo  para obtener valores más precisos haciendo un promedio
-Para obteneer las graficas he usado la función plot de octave.
+\subsubsection{Código para usar de las funciones}
+Con este código se obtienen las graficas. El el primer caso se obtiene una gráfica de los tiempos de ejecución de vectores de tamaño 1 hasta 20. En el segundo caso se ejecuta tres veces con tamaño del vector igual a 500 el algoritmo  para obtener valores más precisos haciendo un promedio
+Para obtener las gráficas he usado la función plot de octave.
 \bigskip %para separa el texto del codigo
 \lstset{language=Octave}
 \begin{lstlisting}[frame=single][language=Octave]
@@ -149,10 +148,25 @@ title (Tiempo de ejecucion de QuickSort);
 xlabel (Tam. del vector);
 ylabel (Tiempo);
 print -dpng Grafica500.png 
+tiemposMedios=zeros(1,0);
 \end{lstlisting}
-\newpage
+\bigskip %para separa el texto del codigo
+\bigskip %para separa el texto del codigo
+\bigskip %para separa el texto del codigo
+\begin{lstlisting}[frame=single][language=Octave]
+
+for i = 1:500
+     tiemposMedios(i) = (tiempos500_1(i) +
+     			tiempos500_2(i) +tiempos500_3(i))/3;
+endfor;
+plot(tiemposMedios,'b');
+title (Tiempo de medio ejecucion de QuickSort);
+xlabel (Tam. del vector);
+ylabel (Tiempo);
+print -dpng tiemposMedios.png 
+\end{lstlisting}
 \section{Resultados obtenidos}
-Como ejemplo de resultado tamaño que sea apreciable, voy a mostrar los datos obtenidos de un vector de 20 elementos.
+Como ejemplo de resultado con un tamaño que sea apreciable, voy a mostrar los datos obtenidos de un vector de 20 elementos.
 \subsection{Vector inicial obtenido aleatoriamente}
 El vector que se ha obtenido es el que se muestra en la siguiente figura:
 \begin{figure}[h]
@@ -162,7 +176,7 @@ El vector que se ha obtenido es el que se muestra en la siguiente figura:
 \end{figure}
 
 \subsection{Vector ordenado obtenido}
-Como se puede observar en la figura es el mismo vector pero esta ordenado. 
+Como se puede observar en la figura es el mismo vector pero está ordenado. 
 El \textbf{tiempo de ejecución del algoritmo QuickSort es de 0.0015240}.
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{Graficos/vectorOrdenado}
@@ -174,16 +188,16 @@ El \textbf{tiempo de ejecución del algoritmo QuickSort es de 0.0015240}.
 A continuancion se muestran la gráficas obtenidas, la primera de ellas muestra el tiempo de ejecución para vectores de tamaño 1 hasta tamaño 20.
  
  \medskip
-La segunda gráfica muestra tres lineas, corrrespondientes a tres pruebas, con vectores aleatorios partiendo igualmente de tamaño 1 y ahora llegando hasta tamaño 500.
+La segunda gráfica muestra tres lineas, correspondientes a tres pruebas, con vectores aleatorios partiendo igualmente de tamaño 1 y ahora llegando hasta tamaño 500.
  
  \medskip
-Como se puede observar en las graficas siguientes el caso peor no tiene porque ser el que mas elementos tenga. De hecho el peor caso depende mayoritariamente del pivote  escogido. El peor caso se da cuando se el pivote elegido esta al extremo de la lista, este caso el orden de ejecución teoricamente es de $O(n^2)$.
-El mejor caso, es cuando el pivote es el elemento centrar de la lista, y esta se divide en dos sublistas de igual tamaño. En el mejor caso el orden de ejecución teoricamente es de $O(nlogn)$. Ademas, en tiempo promedio teoricamente el algoritmo tambien tarda $O(nlogn)$.
-\newpage
-\subsection{Grafica de 1 a 20 elementos}
+Como se puede observar en las graficas siguientes, el caso peor no tiene por qué ser el que más elementos tenga. De hecho, el peor caso depende mayoritariamente del pivote  escogido. El peor caso se da cuando se el pivote elegido está al extremo de la lista, y en este caso el orden de ejecución teóricamente es de $O(n^2)$.
+El mejor caso, es cuando el pivote es el elemento central de la lista, y ésta se divide en dos sublistas de igual tamaño. En el mejor caso el orden de ejecución teóricamente es de $O(nlogn)$. Además, en tiempo promedio teóricamente el algoritmo tambien tarda $O(nlogn)$.
+
+\subsection{Gráfica de 1 a 20 elementos}
 En la siguiente gráfica se muestran los tiempos de ejecucion para vectores de tamaño 1 hasta tamaño 20.
 
-Como se puede observar, el tiempo no aumenta constantemente. Para el vector de tamaño 7 se obtiene un tiempo de ejecucion aproximado de 0.0015 el cual es mayor al tiempo de ejecución de tamaño 18. Esto puede deberse a que el pivote escogido por el de tamaño 7 estaba mas pegado a los extremos que el de tamaño 18, lo que hace que el tiempo de ejecución aumente.
+Como se puede observar, el tiempo no aumenta constantemente. Para el vector de tamaño 7 se obtiene un tiempo de ejecución aproximado de 0.0015, el cual es mayor al tiempo de ejecución de tamaño 18. Esto puede deberse a que el pivote escogido por el de tamaño 7 estaba más pegado a los extremos que el de tamaño 18, lo que hace que el tiempo de ejecución aumente.
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{Graficos/Grafica20}
 \caption{Grafica de tiempos de ejecución 1 a 20 elementos}
@@ -199,6 +213,7 @@ Como se observa en la figura, los tiempos aumentan conforme aumenta el tamaño d
 \caption{Grafica de tiempos de ejecución 1 a 500 elementos con tres pruebas}
 \label{fig:Grafica500}
 \end{figure}
+\newpage
 \subsection{Grafica de tiempos medios de ejecución}
 En la siguiente gráfica se muestra el tiempo medio de ejecución, obtenido de las tres graficas anteriores.
 
@@ -210,8 +225,8 @@ En esta gráfica tambien se observa que el crecimiento es de orden similiar a li
 \end{figure}
 
 \section{Merjoras respecto tiempos de ejecución}
-Una mejora que se podia hacer al algoritmo quick sort para obtener mejores tiempos de ejecución, seria cambiar al elección del pivote. 
-En el algoritmo actual, se elige como pivote el elemento central del vector, el cual puede ser uno de los peores. Una idea seria elegir tres numeros del vector y de ellos quedarnos con él elemento central de ambos, de esta manera sabriamos que el en el pero caso el pivote no seria el ninguno de los extremos.
+Una mejora que se podría hacer al algoritmo quick sort para obtener mejores tiempos de ejecución, sería cambiar al elección del pivote. 
+En el algoritmo actual, se elige como pivote el elemento central del vector, el cual puede ser uno de los peores. Una idea sería elegir tres números diferentes del vector y de ellos quedarnos con el elemento central, de esta manera sabríamos que en el peor caso el pivote no sería el ninguno de los extremos.
 
 \newpage
 \begin{thebibliography}{99}
@@ -226,4 +241,3 @@ En el algoritmo actual, se elige como pivote el elemento central del vector, el 
 \end{thebibliography}
 
 \end{document}
-
