@@ -1,11 +1,12 @@
 \documentclass[a4,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage[margin=3cm]{geometry}
+\usepackage[margin=2cm]{geometry}
 \usepackage{graphicx}
 \usepackage{import}
 \usepackage{color}
 \usepackage{times}
+\usepackage{listings}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -29,7 +30,7 @@
 
 
 \begin{abstract}
-En este documento en \LaTeX{} se explica el calculo del algoritmo de ordenación QuickSort hecho en octave y los tiempos de ejecución para diferentes tamaños de problemas.
+En este documento en \LaTeX{} se explica el calculo del algoritmo de ordenación QuickSort hecho en Octave y los tiempos de ejecución para diferentes tamaños de problemas.
 \end{abstract}
 
 \tableofcontents
@@ -38,20 +39,83 @@ En este documento en \LaTeX{} se explica el calculo del algoritmo de ordenación
 
 \section{Introducción al algoritmo}
 
-En este documento se muestra como hacer un algoritmo de ordenación en octave. En este caso he implementado el algoritmo QuickSort, que lo que hace es elegir un pivote y dividiendo el vector en los mayores, menores o iguales a él.
+En este documento se muestra como hacer un algoritmo de ordenación en Octave. En este caso he implementado el algoritmo QuickSort, que lo que hace es elegir un pivote y dividiendo el vector en los mayores, menores o iguales a él.
 
 
 
 \section{QuickSort}
 
-%Explicar el pseudocodigo
+El algortimo Quick Sorrt esta basado en la técnica de divide y vencerás, el cual permite en ordenar n elementos en un tiempo proporcional a \emph{n log n}. El algoritmo elige un elemento de la lista al que se le llama pivote. Despues el algoritmo separa en tres vectores los menores, los mayores, y los iguales al pivote. En este momento se van haciendo llamadas recurisivas, de estas listas hasta que sean de tamaño uno. Al final se combinan y da como resultado el vector original ordenado.
+
 
 \subsection{Pseudocódigo}
+\lstset{language=Pascal}
+\begin{lstlisting}[frame=single][language=Octave]
+FUNCION QuickSort(vector)
+	SI logitud(vector)>1  ENTONCES
+		//Se elige de pivote el elemento central 
+		del vector
+		Pivote = vector(posicionCentral)
+		PARA cada elemento n de vector
+			SI n < Pivote ENTONCES
+				insertar a la lista menores
+			FINSI
+			SI n = Pivote ENTONCES
+				insertar a la lista iguales
+			FINSI
+			SI n > Pivote ENTONCES
+				insertar a la lista mayores
+			FINSI
+		FINPARA
+		VectorOrdenado =Concatenar(QuickSort(menores), 
+					QuickSort(iguales), 
+					QuickSort(mayores))	
+	Devolver VectorOrdenado	
+	FINSI
+FINFUNCION
 
-\subsection{Código en octave}
+\end{lstlisting}
 
+\subsection{Código en Octave}
+\subsubsection{Funcion QuickSort en Octave}
+Para la implementacion de la función QuickSort he hecho de funciones de ocatave. Una de ellas es la funcion \emph{round} que redondea el valor obtenido de la division. Otra función que he usado es \emph{find}, dada una condición crea un vector con los valores que la cumplan, en el primer caso crea un vector con los valores menores que el pivote.
+\bigskip %para separa el texto del codigo
+\lstset{language=Octave}
+\begin{lstlisting}[frame=single][language=Octave]
+function vectorOrdenado=quickSort(v)     
+  vectorOrdenado = v;
+  n=length(v);
+  if(n > 1)          
+     pivote=v(round(n/2)+1);             
+     menores = find(vectorOrdenado < pivote); 
+     iguales = find(vectorOrdenado == pivote);
+     mayores=find(vectorOrdenado > pivote);
+     vectorOrdenado  = [quickSort(vectorOrdenado(menores));
+     			vectorOrdenado(iguales); 
+     			quickSort(vectorOrdenado(mayores))];
+  end
+endfunction
+\end{lstlisting}
+\subsubsection{Funcion para calcular los tiempos de ejecucion de Quick Sort}
+Este algoritmo calcula el tiempo de ejecución de la función Quick Sort desde tamaño 1 hasta el tamaño máximo pasado por parametro \emph {tamMax}. Para calcular el tiempo de ejecución he usado las funciones tic y toc de Octave. En toc se guarda el tiempo, y este lo almaceno en un vector \emph{tiemposTam}, el cual cada indice corresponde al tamaño del vector ejecutado.
+La funcíon \emph{zeros(1,0)} crea un vector de una fila y lo rellena con ceros.
+Para que los casos a probar sean los mas dispares posibles he usado la funcion \emph{rand(tam,1)} para que los valores de los vectores sean aleatorios. La función \emph{rand} devuelve numeros aleatorios entre cero y uno. Debido a esto la multiplico por 2000, para que el rango de valores sea aun mas amplio.
+\bigskip %para separa el texto del codigo
+\lstset{language=Octave}
+\begin{lstlisting}[frame=single][language=Octave]
+function tiemposTam=tiempoQuickSort(maxTam)
+	tiemposTam=zeros(1,0);
+	tam=1;
+	while(tam<maxTam)
+		vector=(rand(tam,1)*2000);
+		tic,u=quickSort(vector); 
+		tiemposTam(tam)=toc;
+		tam=tam+1;
+		endwhile
+endfunction
 
-
+\end{lstlisting}
+\subsubsection{}
 \section{Gráfica de tiempos de ejecución}
 
 

@@ -12,14 +12,13 @@ function vectorOrdenado=quickSort(v)
      menores = find(vectorOrdenado < pivote); 
      iguales = find(vectorOrdenado == pivote);
      mayores=find(vectorOrdenado > pivote);
-     vectorOrdenado  = [quickSort(vectorOrdenado(menores)); vectorOrdenado(iguales); quickSort(vectorOrdenado(mayores))];
+     vectorOrdenado  = [quickSort(vectorOrdenado(menores)); 							vectorOrdenado(iguales); 
+     					quickSort(vectorOrdenado(mayores))];
   end
 endfunction
  
-function tiemposTam=tiempoQuickSort(maxTam,incremento)
+function tiemposTam=tiempoQuickSort(maxTam)
 	tiemposTam=zeros(1,0);
-	incremento = input('Introduce el valor de incremento: ');
-	maxTam = input('Introduce el valor del tamaño maximo: ');
 	tam=1;
 	while(tam<maxTam)
 		vector=(rand(tam,1)*500);			%rellena el vector de tamaño n con numeros aleatorios entre cero y uno y los multiplica por 500
@@ -32,12 +31,13 @@ function tiemposTam=tiempoQuickSort(maxTam,incremento)
 		%printf(' %f ',u);
 		%printf('\n');
 		%printf('El tiempo de ejecion con tamaño %d es: %f ',tam,tiemposTam(tam));
-		tam=tam+incremento;
+		tam=tam+1;
 		endwhile
 
 endfunction
 
-tiempos=tiempoQuickSort(100,10);
+maxTam = input('Introduce el valor del tamaño maximo: ');
+tiempos=tiempoQuickSort(maxTam);
 %printf('El tiempo de ejecion con tamaño : %f ',tiempos);
 %printf('\n');
-plot(tiempos);
+plot(tiempos,'m');
