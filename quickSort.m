@@ -1,8 +1,5 @@
 %Algoritmo de ordenación quick sort a partir de un vector de tamaño n y datos aleatorios
-%disp('Este programa ordena un vector de tamaño n, con numeros aleatorios.');
-global vector;%=(rand(n,1)*500);			%rellena el vector de tamaño n con numeros aleatorios entre cero y uno y los multiplica por 500
-%disp('El vector es el siguiente: ');
-%printf(' %f ',vector);
+global vector;
 
 function vectorOrdenado=quickSort(v)     
   vectorOrdenado = v;               
@@ -20,24 +17,59 @@ endfunction
 function tiemposTam=tiempoQuickSort(maxTam)
 	tiemposTam=zeros(1,0);
 	tam=1;
-	while(tam<maxTam)
-		vector=(rand(tam,1)*500);			%rellena el vector de tamaño n con numeros aleatorios entre cero y uno y los multiplica por 500
-		%disp('El vector es el siguiente: ');
-		%printf(' %f ',vector);
+	while(tam<=maxTam)
+		vector=(rand(tam,1)*500);	
 		tic,u=quickSort(vector); 
 		tiemposTam(tam)=toc;
-
-		%disp('El vector ordenado es el siguiente: ');
-		%printf(' %f ',u);
-		%printf('\n');
-		%printf('El tiempo de ejecion con tamaño %d es: %f ',tam,tiemposTam(tam));
+		if(length(vector)==20)
+			disp('El vector inicial es el siguiente: ');
+			printf(' %f ',vector);
+			printf('\n');
+			disp('El vector ordenado es el siguiente: ');
+			printf(' %f ',u);
+			printf('\n');
+			tiemposTam(20)
+		end
 		tam=tam+1;
 		endwhile
 
 endfunction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%						USO DE LAS FUNCIONES						%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Si se quiere que pida los valores por teclado DESCOMENTAR estas dos lineas => maxTam = input('Introduce el valor del tamaño maximo: ');
 
-maxTam = input('Introduce el valor del tamaño maximo: ');
-tiempos=tiempoQuickSort(maxTam);
-%printf('El tiempo de ejecion con tamaño : %f ',tiempos);
-%printf('\n');
-plot(tiempos,'m');
+% =>  tiempos=tiempoQuickSort(maxTam);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%		Tamaño 20 elementos		 			  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%{
+tiempos20=tiempoQuickSort(20);
+tiempos20(20);
+plot(tiempos20,'m--');
+title ("Tiempo de ejecucion de QuickSort");
+xlabel ("Tam. del vector");
+ylabel ("Tiempo");
+print -dpng Grafica20.png 
+%}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%		Tamaño 500 elementos		 		  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+tiempos500_1=tiempoQuickSort(500);
+tiempos500_2=tiempoQuickSort(500);
+tiempos500_3=tiempoQuickSort(500);
+plot(tiempos500_1,'m', tiempos500_2,'r--',tiempos500_3,'c+');
+title ("Tiempo de ejecucion de QuickSort");
+xlabel ("Tam. del vector");
+ylabel ("Tiempo");
+print -dpng Grafica500.png 
+tiemposMedios=zeros(1,0);
+for i = 1:500
+     tiemposMedios(i) = (tiempos500_1(i) + tiempos500_2(i) +tiempos500_3(i))/3;
+endfor;
+plot(tiemposMedios,'b');
+title ("Tiempo de medio ejecucion de QuickSort");
+xlabel ("Tam. del vector");
+ylabel ("Tiempo");
+print -dpng tiemposMedios.png 
